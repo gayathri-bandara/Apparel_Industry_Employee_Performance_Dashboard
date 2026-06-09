@@ -1,5 +1,7 @@
 Goal:
+
 Show how employees perform in a garment factory based on:
+
 productivity / attendance / quality of work / overtime
 
 # 👕 Apparel Industry Employee Performance Dashboard
