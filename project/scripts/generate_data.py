@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import numpy as np
 from faker import Faker
@@ -29,8 +30,9 @@ employees_df = pd.DataFrame(employees, columns=[
 # ---------------------------
 # 2. Generate Performance Table
 # ---------------------------
-
-dates = pd.date_range(start="2024-01-01", end="2024-03-31")
+ 
+# To add more data, extend the 'end' date. For example, to generate data until the end of 2024:
+dates = pd.date_range(start="2022-01-01", end="2025-12-31")
 
 performance_data = []
 
@@ -53,7 +55,16 @@ performance_df = pd.DataFrame(performance_data, columns=[
 # 3. Save Files
 # ---------------------------
 
-employees_df.to_csv("employees.csv", index=False)
-performance_df.to_csv("performance.csv", index=False)
+# Use absolute paths relative to the script location to avoid FileNotFoundError
+base_dir = os.path.dirname(os.path.abspath(__file__))
+data_dir = os.path.join(base_dir, "..", "data")
 
-print("✅ Data generated successfully!")
+# Create the directory if it doesn't exist
+os.makedirs(data_dir, exist_ok=True)
+
+try:
+    employees_df.to_csv(os.path.join(data_dir, "employees.csv"), index=False)
+    performance_df.to_csv(os.path.join(data_dir, "performance.csv"), index=False)
+    print("✅ Data generated successfully!")
+except PermissionError:
+    print("❌ Error: Permission denied. Please close 'employees.csv' and 'performance.csv' if they are open in Excel or another program, then run the script again.")
